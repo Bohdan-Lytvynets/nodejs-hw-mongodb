@@ -1,22 +1,24 @@
 import Joi from 'joi';
-
-export const createContactsSchema = Joi.object({
-  name: Joi.string().min(3).max(20).required(),
+export const createContactSchema = Joi.object({
+  name: Joi.string().min(3).max(20).required().messages({
+    'string.base': 'Username should be a string',
+  }),
   phoneNumber: Joi.string().min(3).max(20).required(),
-  email: Joi.string().min(3).max(20),
-  isFavourite: Joi.boolean().default(false),
-  contactType: Joi.string()
-    .min(3)
-    .max(20)
-    .valid('work', 'home', 'personal')
-    .required()
-    .default('personal'),
+  email: Joi.string().email().messages({
+    'string.base': 'Invalid email',
+  }),
+  isFavourite: Joi.boolean(),
+  contactType: Joi.string().valid('work', 'home', 'personal').required(),
 });
 
-export const updateContactsSchema = Joi.object({
-  name: Joi.string().min(3).max(20),
+export const updateContactSchema = Joi.object({
+  name: Joi.string().min(3).max(20).messages({
+    'string.base': 'Username should be a string',
+  }),
   phoneNumber: Joi.string().min(3).max(20),
-  email: Joi.string().min(3).max(20).email(),
+  email: Joi.string().email().messages({
+    'string.base': 'Invalid email',
+  }),
   isFavourite: Joi.boolean(),
-  contactType: Joi.string().min(3).max(20).valid('work', 'home', 'personal'),
+  contactType: Joi.string().valid('work', 'home', 'personal'),
 });
